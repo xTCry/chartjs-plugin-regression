@@ -1,11 +1,10 @@
 import { Chart, Plugin as ChartPlugin } from 'chart.js';
 import { MetaDataSet } from './MetaData';
 import { MetaSection } from './MetaSection';
-import { ChartDataSetsEx, OptionsConfig } from './types';
 
 // Cache for all plugins' metadata
-var _metadataMap: any = {};
-var _chartId = 0;
+let _metadataMap: any = {};
+let _chartId = 0;
 
 interface ChartEx extends Chart {
   $$id: number;
@@ -23,13 +22,8 @@ class Plugin implements ChartPlugin {
    * @param chart
    */
   beforeUpdate?(chart: Chart, options?: any): void {
-    let o, p, r: OptionsConfig;
     const onComplete =
       chart.config.options?.plugins?.regressions?.onCompleteCalculation;
-      // (o = chart.config.options) &&
-      // (p = o.plugins) &&
-      // (r = p.regressions) &&
-      // r.onCompleteCalculation;
 
     forEach(chart, (ds, meta, datasetIndex) => {
       meta = new MetaDataSet(chart, ds);
@@ -77,12 +71,12 @@ class Plugin implements ChartPlugin {
 }
 
 function forEach(
-  chart: any,
-  fn: (ds: ChartDataSetsEx, meta: MetaDataSet, datasetIndex: number) => void
+  chart: Chart | ChartEx,
+  fn: (ds: any, meta: MetaDataSet, datasetIndex: number) => void
 ) {
-  chart.data.datasets.forEach((ds: ChartDataSetsEx, i: number) => {
+  chart.data.datasets.forEach((ds, i) => {
     if (ds.regressions && chart.isDatasetVisible(i)) {
-      const meta = ChartRegressions.getDataset(chart, i);
+      const meta = ChartRegressions.getDataset(chart as ChartEx, i);
       fn(ds, meta, i);
     }
   });

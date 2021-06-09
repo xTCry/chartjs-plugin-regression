@@ -145,7 +145,7 @@ export class MetaSection implements Section, BasicOptions {
 
     r.points = sectionData.map(p => r.predict(p[0])) as any;
     delete (r as any).r2;
-    
+
     if (overwrite != 'none') {
       const dsdata = this._meta.dataset.data!;
       const isXY = this._meta.isXY;

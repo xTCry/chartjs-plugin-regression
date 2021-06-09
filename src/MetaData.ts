@@ -1,13 +1,19 @@
 import { DataPoint } from 'regression';
-import { Point, Chart } from 'chart.js';
+import {
+  Point,
+  Chart,
+  ChartDatasetProperties,
+  DefaultDataPoint,
+  ChartType
+} from 'chart.js';
 import { MetaSection } from './MetaSection';
-import { Section, ChartDataSetsEx, DatasetConfig } from './types';
+import { Section, DatasetConfig } from './types';
 
 type GetXY = (x: number, y: number) => Point;
 
 export class MetaDataSet {
   chart: Chart;
-  dataset: ChartDataSetsEx;
+  dataset: ChartDatasetProperties<ChartType, DefaultDataPoint<ChartType>>;
 
   /** Sections */
   sections: MetaSection[];
@@ -22,12 +28,14 @@ export class MetaDataSet {
   /** Is the dataset's data an array of {x,y}? */
   isXY = false;
 
-  constructor(chart: Chart, ds: ChartDataSetsEx) {
-    const cfg = ds.regressions;
+  constructor(
+    chart: Chart,
+    dataset: ChartDatasetProperties<ChartType, DefaultDataPoint<ChartType>>
+  ) {
     this.chart = chart;
-    this.dataset = ds;
-    this.normalizedData = this._normalizeData(ds.data!);
-    this.sections = this._createMetaSections(cfg);
+    this.dataset = dataset;
+    this.normalizedData = this._normalizeData(dataset.data! as any);
+    this.sections = this._createMetaSections(dataset.regressions!);
     this._calculate();
   }
 

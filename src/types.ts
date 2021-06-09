@@ -1,10 +1,5 @@
 import * as regression from 'regression';
-import {
-  Chart,
-  ChartType,
-  ChartDatasetProperties,
-  DefaultDataPoint
-} from 'chart.js';
+import { Chart } from 'chart.js';
 
 export type Type =
   | 'copy'
@@ -68,13 +63,6 @@ export interface Section extends BasicOptions {
   label?: string;
 }
 
-export interface ChartDataSetsEx<
-  TType extends ChartType = ChartType,
-  TData = DefaultDataPoint<TType>
-> extends ChartDatasetProperties<TType, TData> {
-  regressions: DatasetConfig;
-}
-
 export interface DatasetConfig extends BasicOptions {
   /** Sections of the data that shall draw a regression. If not specified it's assumed {start:0,end:data.length-1} */
   sections?: Section[];
@@ -98,5 +86,8 @@ export interface OptionsConfig extends BasicOptions {
 declare module 'chart.js' {
   export interface PluginOptionsByType<TType extends ChartType> {
     regressions: OptionsConfig;
+  }
+  export interface ChartDatasetProperties<TType extends ChartType, TData> {
+    regressions?: DatasetConfig;
   }
 }
