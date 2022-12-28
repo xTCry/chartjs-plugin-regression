@@ -34,6 +34,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/regression": "^2.0.0",
+    "chart.js": "3.1.0",
     "prettier": "^2.0.5",
     "source-map-loader": "^1.0.1",
     "tsc-watch": "^4.4.0",
